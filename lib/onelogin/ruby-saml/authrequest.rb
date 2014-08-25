@@ -24,7 +24,7 @@ module OneLogin
       def create_params(settings, params={})
         params = {} if params.nil?
 
-        request_doc = create_authentication_xml_doc(settings)
+        request_doc = create_authentication_xml_doc(settings, params)
         request_doc.context[:attribute_quote] = :quote if settings.double_quote_xml_attribute_values
 
         # Add XML-Signature node and sign the document if requested in settings
@@ -43,7 +43,7 @@ module OneLogin
             "Algorithm" => "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
           }
           reference = signed_info.add_element "Reference", {
-            "URI" => params[:uri]
+            "URI" => "#" + params[:uri]
           }
           transforms = reference.add_element "Transforms"
           transforms.add_element "Transform", {
@@ -98,8 +98,8 @@ module OneLogin
         request_params
       end
 
-      def create_authentication_xml_doc(settings)
-        uuid = "_" + UUID.new.generate
+      def create_authentication_xml_doc(settings, params = {})
+        uuid = params[:uri]
         time = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
         # Create AuthnRequest root element using REXML
         request_doc = XMLSecurity::RequestDocument.new
