@@ -43,7 +43,7 @@ module OneLogin
             "Algorithm" => "http://www.w3.org/2000/09/xmldsig#rsa-sha1"
           }
           reference = signed_info.add_element "Reference", {
-            "URI" => ""
+            "URI" => "_" + UUID.new.generate
           }
           transforms = reference.add_element "Transforms"
           transforms.add_element "Transform", {
