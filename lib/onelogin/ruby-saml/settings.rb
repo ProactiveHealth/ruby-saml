@@ -28,6 +28,8 @@ module OneLogin
         assertion_consumer_service_binding == 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign'
       end
 
+      attr_accessor :private_key_pass
+
       private
 
       DEFAULTS = {
