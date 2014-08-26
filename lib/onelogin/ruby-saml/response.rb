@@ -124,12 +124,12 @@ module OneLogin
       end
 
       def validate(soft = true)
-        cert = OpenSSL::X509::Certificate.new(settings.idp_cert)
+        cert = Base64.encode64(settings.idp_cert)
 
         validate_structure(soft)      &&
         validate_response_state(soft) &&
         validate_conditions(soft)     &&
-        document.validate_signature(cert.text, soft) &&
+        document.validate_signature(cert, soft) &&
         success?
       end
 
